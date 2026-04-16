@@ -13,70 +13,73 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-html, body {
+html {
   width: 100%;
-  height: 100%;
   background: #050300;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body {
+  width: 100%;
+  min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   font-family: 'Cormorant Garamond', serif;
-  min-height: 100dvh;
+  background: #050300;
+  overflow-x: hidden;
 }
 
 /* ─── CONTENEDOR ─── */
 .invite {
   width: min(430px, 100vw);
-  height: 100dvh;
-  max-height: 926px;
+  min-height: 100dvh;
   position: relative;
   background: #000;
-  overflow: hidden;
+  overflow: hidden; /* solo bloquea desborde horizontal */
 }
 
 @media (min-width: 431px) {
   .invite {
     border-radius: 36px;
-    height: min(926px, 95dvh);
+    min-height: min(926px, 95dvh);
+    margin: 2dvh 0;
     box-shadow: 0 0 0 1px #1a1200, 0 32px 90px rgba(0,0,0,0.85);
   }
 }
 
-/* ─── CANVAS ─── */
+/* ─── CANVAS (fixed para cubrir scroll) ─── */
 #canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 2;
+  z-index: 0;
 }
 
 /* ─── FONDO ─── */
 .bg {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background:
     radial-gradient(ellipse 90% 45% at 50% 0%,  rgba(175,125,10,0.20) 0%, transparent 70%),
     radial-gradient(ellipse 60% 35% at 50% 100%, rgba(75,42,0,0.22)   0%, transparent 60%),
     #000;
-  z-index: 0;
+  z-index: -1;
 }
 
 /* ─── CONTENIDO ─── */
 .content {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: clamp(24px, 6dvh, 52px) clamp(20px, 6vw, 36px) clamp(20px, 5dvh, 40px);
+  min-height: 100dvh;
+  gap: clamp(16px, 3dvh, 28px);
+  padding: clamp(28px, 6dvh, 56px) clamp(20px, 6vw, 36px) clamp(24px, 5dvh, 44px);
 }
 
 /* ── TOP ── */
@@ -84,17 +87,18 @@ body {
 
 .te-invita {
   font-family: 'Great Vibes', cursive;
-  color: #c8803a;
-  font-size: clamp(14px, 3.8vw, 20px);
-  opacity: 0.9;
+  color: #e8a84a;
+  font-size: clamp(16px, 4.2vw, 22px);
+  text-shadow: 0 0 18px rgba(232,168,74,0.5);
   display: block;
   animation: riseIn 1.4s ease both;
 }
 
 .mis {
   font-family: 'Great Vibes', cursive;
-  color: #c9a35a;
-  font-size: clamp(22px, 5.8vw, 30px);
+  color: #e0bb6a;
+  font-size: clamp(24px, 6.2vw, 32px);
+  text-shadow: 0 0 16px rgba(224,187,106,0.45);
   display: block;
   animation: riseIn 1.4s 0.1s ease both;
 }
@@ -129,20 +133,22 @@ body {
 
 .anos-text {
   font-family: 'Cinzel', serif;
-  color: #a07820;
-  font-size: clamp(6px, 1.5vw, 8.5px);
+  color: #c8a030;
+  font-size: clamp(7px, 1.7vw, 10px);
   letter-spacing: clamp(3px, 0.9vw, 6px);
-  font-weight: 400;
+  font-weight: 600;
   display: block;
   white-space: nowrap;
   margin-top: 4px;
+  text-shadow: 0 0 12px rgba(200,160,48,0.5);
   animation: riseIn 1.3s 0.35s ease both;
 }
 
 .brillo {
   font-family: 'Great Vibes', cursive;
-  color: rgba(201,163,90,0.82);
-  font-size: clamp(14px, 3.8vw, 19px);
+  color: rgba(230,190,90,0.95);
+  font-size: clamp(16px, 4.2vw, 22px);
+  text-shadow: 0 0 20px rgba(230,190,90,0.55), 0 0 40px rgba(212,175,55,0.25);
   display: block;
   margin-top: 6px;
   animation: riseIn 1.3s 0.45s ease both;
@@ -171,9 +177,9 @@ body {
 }
 .nombre {
   font-family: 'Great Vibes', cursive;
-  color: #d4af37;
-  font-size: clamp(28px, 8vw, 40px);
-  text-shadow: 0 0 22px rgba(212,175,55,0.28);
+  color: #f0cc55;
+  font-size: clamp(30px, 8.5vw, 44px);
+  text-shadow: 0 0 24px rgba(240,204,85,0.6), 0 0 50px rgba(212,175,55,0.3);
   white-space: nowrap;
 }
 
@@ -191,11 +197,12 @@ body {
 }
 .cd-label {
   font-family: 'Cinzel', serif;
-  color: #957220;
-  font-size: clamp(5px, 1.3vw, 7px);
+  color: #c8a030;
+  font-size: clamp(6px, 1.5vw, 8px);
   letter-spacing: 3px;
   margin-bottom: 8px;
   display: block;
+  text-shadow: 0 0 10px rgba(200,160,48,0.4);
 }
 .cd-units {
   display: flex;
@@ -206,22 +213,22 @@ body {
 .cd-unit { text-align: center; min-width: 34px; }
 .cd-num {
   font-family: 'Cinzel', serif;
-  color: #d4af37;
-  font-size: clamp(19px, 5.5vw, 27px);
+  color: #f0cc55;
+  font-size: clamp(20px, 6vw, 28px);
   font-weight: 600;
   line-height: 1;
-  text-shadow: 0 0 14px rgba(212,175,55,0.35);
+  text-shadow: 0 0 18px rgba(240,204,85,0.55);
   display: block;
 }
 .cd-sep {
-  color: rgba(160,120,32,0.5);
-  font-size: 16px;
+  color: rgba(200,160,48,0.6);
+  font-size: 18px;
   padding-bottom: 3px;
 }
 .cd-lbl {
   font-family: 'Cinzel', serif;
-  color: rgba(100,75,10,0.75);
-  font-size: clamp(4.5px, 1.1vw, 6px);
+  color: rgba(180,135,30,0.85);
+  font-size: clamp(5px, 1.2vw, 7px);
   letter-spacing: 1px;
   margin-top: 3px;
   display: block;
@@ -239,38 +246,20 @@ body {
 
 .fecha {
   font-family: 'Cinzel', serif;
-  color: #a07820;
-  font-size: clamp(7px, 1.8vw, 9.5px);
+  color: #c8a030;
+  font-size: clamp(8px, 2vw, 11px);
   letter-spacing: clamp(2px, 0.7vw, 3.5px);
   text-align: center;
+  text-shadow: 0 0 12px rgba(200,160,48,0.4);
 }
 
 .lugar {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  color: rgba(160,118,30,0.52);
-  font-size: clamp(11px, 2.8vw, 14px);
+  color: rgba(220,175,60,0.75);
+  font-size: clamp(13px, 3.2vw, 16px);
   text-align: center;
-}
-
-/* Mapa integrado */
-.map-link {
-  display: block;
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(212,175,55,0.18);
-  text-decoration: none;
-  transition: opacity 0.3s;
-  flex-shrink: 0;
-}
-.map-link:hover { opacity: 0.85; }
-.map-link iframe {
-  width: 100%;
-  height: clamp(80px, 14dvh, 130px);
-  border: none;
-  display: block;
-  filter: grayscale(1) invert(1) sepia(0.3) saturate(0.6) hue-rotate(5deg) brightness(0.7);
+  text-shadow: 0 0 14px rgba(212,175,55,0.3);
 }
 
 /* Botón RSVP */
@@ -291,12 +280,19 @@ body {
 .rsvp-btn:active { transform: scale(0.97); }
 .rsvp-btn span {
   font-family: 'Cinzel', serif;
-  color: #c9a84c;
-  font-size: clamp(6px, 1.5vw, 8px);
+  color: #e8c85a;
+  font-size: clamp(6.5px, 1.6vw, 8.5px);
   font-weight: 600;
   letter-spacing: 1.5px;
   white-space: nowrap;
+  text-shadow: 0 0 10px rgba(232,200,90,0.4);
 }
+
+a.lugar {
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+a.lugar:hover { opacity: 0.75; }
 
 .ornament {
   font-family: 'Cormorant Garamond', serif;
@@ -359,19 +355,11 @@ body {
     <div class="bottom">
       <div class="fecha">29 · A B R I L · 2026 &nbsp;|&nbsp; 4:00 PM</div>
 
-      <a class="map-link"
+      <a class="lugar"
          href="https://maps.google.com/?q=Bellini+206+Campestre+Italiana+Querétaro"
-         target="_blank"
-         rel="noopener">
-        <iframe
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.2!2d-100.4060!3d20.6296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDM3JzQ2LjYiTiAxMDDCsDI0JzIxLjYiVw!5e0!3m2!1ses!2smx!4v1681000000000!5m2!1ses!2smx&q=Bellini+206,+Campestre+Italiana,+Querétaro"
-          allowfullscreen>
-        </iframe>
+         target="_blank" rel="noopener">
+        📍 Bellini 206, Campestre Italiana, Qro.
       </a>
-
-      <div class="lugar">📍 Bellini 206, Campestre Italiana, Qro.</div>
 
       <a class="rsvp-btn"
          href="https://wa.me/524426808623?text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20los%20fabulosos%2055%20de%20Juanita%20🎉"
