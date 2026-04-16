@@ -17,11 +17,14 @@ html {
   width: 100%;
   background: #050300;
   overflow-x: hidden;
+  /* evita salto de layout cuando aparece la barra del navegador en Android */
+  scroll-behavior: smooth;
 }
 
 body {
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;          /* vh como base universal */
+  min-height: 100svh;         /* svh en browsers modernos (Android Chrome 108+) */
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -32,18 +35,20 @@ body {
 
 /* ─── CONTENEDOR ─── */
 .invite {
-  width: min(430px, 100vw);
-  min-height: 100dvh;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  min-height: 100svh;
   position: relative;
   background: #000;
-  overflow: hidden; /* solo bloquea desborde horizontal */
+  overflow-x: hidden;         /* solo horizontal — permite scroll vertical */
 }
 
 @media (min-width: 431px) {
   .invite {
     border-radius: 36px;
-    min-height: min(926px, 95dvh);
-    margin: 2dvh 0;
+    min-height: min(926px, 95svh);
+    margin: 2vh 0;
     box-shadow: 0 0 0 1px #1a1200, 0 32px 90px rgba(0,0,0,0.85);
   }
 }
@@ -77,9 +82,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: 100dvh;
-  gap: clamp(16px, 3dvh, 28px);
-  padding: clamp(28px, 6dvh, 56px) clamp(20px, 6vw, 36px) clamp(24px, 5dvh, 44px);
+  min-height: 100vh;
+  min-height: 100svh;
+  gap: clamp(14px, 2.8vh, 26px);
+  padding: clamp(24px, 5.5vh, 52px) clamp(18px, 5.5vw, 34px) clamp(22px, 4.5vh, 40px);
+  width: 100%;
 }
 
 /* ── TOP ── */
@@ -105,12 +112,13 @@ body {
 
 .numero {
   font-family: 'Bodoni Moda', serif;
-  font-size: clamp(96px, 26vw, 136px);
+  font-size: clamp(82px, 22vw, 136px);   /* más conservador en pantallas pequeñas */
   font-weight: 900;
   font-style: italic;
   line-height: 1;
   display: block;
   padding-bottom: 0.08em;
+  max-width: 100%;
   background: linear-gradient(165deg,
     #f5ead0 0%,
     #e8c96e 18%,
@@ -122,7 +130,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -2px;
+  letter-spacing: -0.02em;              /* em relativo al tamaño = siempre proporcional */
   animation: riseIn 1.3s 0.2s ease both, pulseGlow 4s 1.6s ease-in-out infinite;
 }
 
@@ -134,11 +142,13 @@ body {
 .anos-text {
   font-family: 'Cinzel', serif;
   color: #c8a030;
-  font-size: clamp(7px, 1.7vw, 10px);
-  letter-spacing: clamp(3px, 0.9vw, 6px);
+  font-size: clamp(7.5px, 2vw, 11px);   /* sube con viewport siempre */
+  letter-spacing: 0.28em;               /* em = proporcional, nunca desborda */
   font-weight: 600;
   display: block;
   white-space: nowrap;
+  overflow: hidden;                      /* red de seguridad */
+  max-width: 100%;
   margin-top: 4px;
   text-shadow: 0 0 12px rgba(200,160,48,0.5);
   animation: riseIn 1.3s 0.35s ease both;
@@ -198,19 +208,22 @@ body {
 .cd-label {
   font-family: 'Cinzel', serif;
   color: #c8a030;
-  font-size: clamp(6px, 1.5vw, 8px);
-  letter-spacing: 3px;
+  font-size: clamp(6.5px, 1.7vw, 8.5px);
+  letter-spacing: 0.22em;              /* em = se encoge con la fuente */
   margin-bottom: 8px;
   display: block;
   text-shadow: 0 0 10px rgba(200,160,48,0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
 }
 .cd-units {
   display: flex;
   justify-content: center;
-  gap: clamp(4px, 1.5vw, 14px);
+  gap: clamp(2px, 1.2vw, 12px);
   align-items: flex-end;
 }
-.cd-unit { text-align: center; min-width: 34px; }
+.cd-unit { text-align: center; min-width: 0; flex: 1; max-width: 56px; }
 .cd-num {
   font-family: 'Cinzel', serif;
   color: #f0cc55;
@@ -247,10 +260,13 @@ body {
 .fecha {
   font-family: 'Cinzel', serif;
   color: #c8a030;
-  font-size: clamp(8px, 2vw, 11px);
-  letter-spacing: clamp(2px, 0.7vw, 3.5px);
+  font-size: clamp(8.5px, 2.2vw, 12px);
+  letter-spacing: 0.18em;             /* em relativo = nunca desborda */
   text-align: center;
   text-shadow: 0 0 12px rgba(200,160,48,0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .lugar {
@@ -281,11 +297,14 @@ body {
 .rsvp-btn span {
   font-family: 'Cinzel', serif;
   color: #e8c85a;
-  font-size: clamp(6.5px, 1.6vw, 8.5px);
+  font-size: clamp(7px, 1.8vw, 9px);
   font-weight: 600;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.14em;            /* em = proporcional al tamaño */
   white-space: nowrap;
   text-shadow: 0 0 10px rgba(232,200,90,0.4);
+  overflow: hidden;
+  display: block;
+  max-width: 100%;
 }
 
 a.lugar {
@@ -314,7 +333,7 @@ a.lugar:hover { opacity: 0.75; }
       <span class="te-invita">te invita a celebrar</span>
       <span class="mis">Mis</span>
       <span class="numero">55</span>
-      <span class="anos-text">F A B U L O S O S &nbsp; A Ñ O S</span>
+      <span class="anos-text">FABULOSOS AÑOS</span>
       <span class="brillo">✦ de puro Brillo ✦</span>
     </div>
 
@@ -327,7 +346,7 @@ a.lugar:hover { opacity: 0.75; }
 
     <!-- COUNTDOWN -->
     <div class="countdown">
-      <span class="cd-label">C U E N T A &nbsp; R E G R E S I V A</span>
+      <span class="cd-label">CUENTA REGRESIVA</span>
       <div class="cd-units">
         <div class="cd-unit">
           <span class="cd-num" id="cd-d">--</span>
@@ -353,7 +372,7 @@ a.lugar:hover { opacity: 0.75; }
 
     <!-- BOTTOM -->
     <div class="bottom">
-      <div class="fecha">29 · A B R I L · 2026 &nbsp;|&nbsp; 4:00 PM</div>
+      <div class="fecha">29 · ABRIL · 2026 &nbsp;|&nbsp; 4:00 PM</div>
 
       <a class="lugar"
          href="https://maps.google.com/?q=Bellini+206+Campestre+Italiana+Querétaro"
@@ -365,7 +384,7 @@ a.lugar:hover { opacity: 0.75; }
          href="https://wa.me/524426808623?text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20los%20fabulosos%2055%20de%20Juanita%20🎉"
          target="_blank"
          rel="noopener">
-        <span>✦ &nbsp; C O N F I R M A R &nbsp; A S I S T E N C I A &nbsp; ✦</span>
+        <span>✦ CONFIRMAR ASISTENCIA ✦</span>
       </a>
 
       <div class="ornament">~ ◆ ~</div>
